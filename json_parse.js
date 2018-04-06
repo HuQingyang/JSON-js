@@ -1,7 +1,9 @@
 
 let at;     // The index of the current character
 let ch;     // The current character
-let escapee = {
+let text;
+
+const escapee = {
     "\"": "\"",
     "\\": "\\",
     "/": "/",
@@ -11,7 +13,18 @@ let escapee = {
     r: "\r",
     t: "\t"
 };
-let text;
+const typesMap = {
+    STRING: 'string',
+    FLOAT: 'float',
+    INT: 'int',
+    BOOLEAN: 'boolean',
+    NULL: 'null',
+    MESSAGE: 'message'
+};
+const labelsMap = {
+    REPEATED: 'REPEATED',
+    OPTIONAL: 'OPTIONAL'
+};
 
 let error = function (m) {
     throw {
@@ -65,11 +78,55 @@ let number = function () {
     if (!isFinite(value)) {
         error("Bad number");
     } else {
-        return value;
+        return {
+            type: `${value}`.indexOf('.') > 0 ? typesMap.FLOAT : typesMap.INT,
+            value: `${value}`
+        };
     }
 };
 
 let string = function () {
+    let hex;
+    let i;
+    let value = "";
+    let uffff;
+
+    if (ch === "\"") {
+        while (next()) {
+            if (ch === "\"") {
+                next();
+                return {
+                    type: typesMap.STRING,
+                    label: labelsMap.OPTIONAL,
+                    value
+                };
+            }
+            if (ch === "\\") {
+                next();
+                if (ch === "u") {
+                    uffff = 0;
+                    for (i = 0; i < 4; i += 1) {
+                        hex = parseInt(next(), 16);
+                        if (!isFinite(hex)) {
+                            break;
+                        }
+                        uffff = uffff * 16 + hex;
+                    }
+                    value += String.fromCharCode(uffff);
+                } else if (typeof escapee[ch] === "string") {
+                    value += escapee[ch];
+                } else {
+                    break;
+                }
+            } else {
+                value += ch;
+            }
+        }
+    }
+    error("Bad string");
+};
+
+let keyString = function () {
     let hex;
     let i;
     let value = "";
@@ -119,20 +176,32 @@ let word = function () {
             next("r");
             next("u");
             next("e");
-            return true;
+            return {
+                type: typesMap.BOOLEAN,
+                label: labelsMap.OPTIONAL,
+                value: true
+            };
         case "f":
             next("f");
             next("a");
             next("l");
             next("s");
             next("e");
-            return false;
+            return {
+                type: typesMap.BOOLEAN,
+                label: labelsMap.OPTIONAL,
+                value: false
+            };
         case "n":
             next("n");
             next("u");
             next("l");
             next("l");
-            return null;
+            return {
+                type: typesMap.NULL,
+                label: labelsMap.OPTIONAL,
+                value: null
+            };
     }
     error("Unexpected '" + ch + "'");
 };
@@ -146,14 +215,22 @@ let array = function () {
         white();
         if (ch === "]") {
             next("]");
-            return arr;   // empty array
+            return {
+                type: null,
+                label: labelsMap.REPEATED,
+                value: arr
+            };
         }
         while (ch) {
             arr.push(value());
             white();
             if (ch === "]") {
                 next("]");
-                return arr;
+                return {
+                    type: arr[0].type,
+                    label: labelsMap.REPEATED,
+                    value: arr
+                };
             }
             next(",");
             white();
@@ -164,27 +241,35 @@ let array = function () {
 
 let object = function () {
     let key;
-    let obj = {};
+    let obj = [];
 
     if (ch === "{") {
         next("{");
         white();
         if (ch === "}") {
             next("}");
-            return obj;
+            return {
+                type: typesMap.MESSAGE,
+                label: labelsMap.OPTIONAL,
+                value: obj
+            };
         }
         while (ch) {
-            key = string();
+            key = keyString();
             white();
             next(":");
             if (Object.hasOwnProperty.call(obj, key)) {
                 error("Duplicate key '" + key + "'");
             }
-            obj[key] = value();
+            obj.push({ name: key, ...value() });
             white();
             if (ch === "}") {
                 next("}");
-                return obj;
+                return {
+                    type: typesMap.MESSAGE,
+                    label: labelsMap.OPTIONAL,
+                    value: obj
+                };
             }
             next(",");
             white();
@@ -224,8 +309,8 @@ function parse(source, reviver) {
         error("Syntax error");
     }
 
-    return (typeof reviver === "function")
-        ? (function walk(holder, key) {
+    return (typeof reviver === "function") ?
+        (function walk(holder, key) {
             let k;
             let v;
             let val = holder[key];
@@ -242,10 +327,10 @@ function parse(source, reviver) {
                 }
             }
             return reviver.call(holder, key, val);
-        }({"": result}, ""))
-        : result;
-};
+        }({"": result}, "")) : result;
+}
 
 
 // export default parse;
-module.exports = parse;
+if (module) module.exports = parse;
+window.parse = parse;
