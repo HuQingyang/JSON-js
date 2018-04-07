@@ -309,7 +309,7 @@ function parse(source, reviver) {
         error("Syntax error");
     }
 
-    return (typeof reviver === "function") ?
+    const res = (typeof reviver === "function") ?
         (function walk(holder, key) {
             let k;
             let v;
@@ -328,9 +328,9 @@ function parse(source, reviver) {
             }
             return reviver.call(holder, key, val);
         }({"": result}, "")) : result;
+    return res.value || res;
 }
 
 
 // export default parse;
-if (module) module.exports = parse;
-window.parse = parse;
+export default parse;

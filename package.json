@@ -1,0 +1,31 @@
+{
+  "name": "big-json-parser",
+  "version": "1.0.0",
+  "main": "dist",
+  "scripts": {
+    "start": "webpack-dev-server --hot --inline --cache --devtool eval --port 2335",
+    "build": "webpack",
+    "example": "webpack-dev-server --config ./example/webpack.config.js --open",
+    "test": "mocha",
+    "lint": "eslint ./",
+    "lintfix": "eslint ./ --fix"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.2",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "eslint": "^4.19.1",
+    "eslint-config-imweb": "^0.2.8",
+    "html-webpack-plugin": "^3.1.0",
+    "mocha": "^5.0.5",
+    "webpack": "3.11.0",
+    "webpack-cli": "^2.0.12",
+    "webpack-dev-server": "2.9.4"
+  },
+  "repository": "https://github.com/HuQingyang/JSON-js",
+  "author": "胡青杨 <i@do.codes>",
+  "license": "MIT"
+}
