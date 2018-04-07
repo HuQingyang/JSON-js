@@ -117,6 +117,4 @@ typings/
 .idea/big-json-parser.iml
 .idea/modules.xml
 .idea/vcs.xml
-dist/
-package.json
-src/
+
