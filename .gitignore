@@ -16,6 +16,7 @@
 .idea/**/sqlDataSources.xml
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
+.idea/inspectionProfiles/Project_Default.xml
 
 # Gradle:
 .idea/**/gradle.xml
@@ -113,3 +114,9 @@ typings/
 # next.js build output
 .next
 
+.idea/big-json-parser.iml
+.idea/modules.xml
+.idea/vcs.xml
+dist/
+package.json
+src/
