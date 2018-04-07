@@ -18,10 +18,11 @@ module.exports = {
   // mode: "production",
   module: {
     rules: [{
-        test: /\.(js)$/,
-        use: ['babel-loader'],
-        include: path.resolve(__dirname, 'src'),
-        exclude: /node_modules/,
-    }]
-  }
+      test: /\.(js)$/,
+      use: ['babel-loader'],
+      include: path.resolve(__dirname, 'src'),
+      exclude: /node_modules/,
+    }],
+  },
+  target: 'web'
 };

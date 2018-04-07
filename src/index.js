@@ -74,13 +74,14 @@ let number = function () {
             next();
         }
     }
-    value = +string;
-    if (!isFinite(value)) {
+    value = string;
+    if (!isFinite(+value)) {
         error("Bad number");
     } else {
         return {
             type: `${value}`.indexOf('.') > 0 ? typesMap.FLOAT : typesMap.INT,
-            value: `${value}`
+            value: `${value}`,
+            label: labelsMap.OPTIONAL
         };
     }
 };
@@ -334,3 +335,4 @@ function parse(source, reviver) {
 
 // export default parse;
 export default parse;
+if (module) module.exports = parse;

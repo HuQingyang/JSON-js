@@ -2,11 +2,11 @@
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define("json-parser", [], factory);
+		define("big-json-parser", [], factory);
 	else if(typeof exports === 'object')
-		exports["json-parser"] = factory();
+		exports["big-json-parser"] = factory();
 	else
-		root["json-parser"] = factory();
+		root["big-json-parser"] = factory();
 })(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -78,7 +78,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(module) {
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -163,13 +163,14 @@ var number = function number() {
             next();
         }
     }
-    value = +string;
-    if (!isFinite(value)) {
+    value = string;
+    if (!isFinite(+value)) {
         error("Bad number");
     } else {
         return {
             type: ("" + value).indexOf('.') > 0 ? typesMap.FLOAT : typesMap.INT,
-            value: "" + value
+            value: "" + value,
+            label: labelsMap.OPTIONAL
         };
     }
 };
@@ -418,6 +419,37 @@ function parse(source, reviver) {
 
 // export default parse;
 exports.default = parse;
+
+if (module) module.exports = parse;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)(module)))
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if(!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if(!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
 
 /***/ })
 /******/ ]);
