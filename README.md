@@ -31,7 +31,7 @@ console.log(result);
             ]},
             { "name": "shards", "type": "int", "value": "1", "label": "OPTIONAL "},
             { "name": "tid", "type": "int", "value": "2000006564", "label": "OPTIONAL" },
-            {" name": "cid", "type": "int", "value": "76629", "label": "OPTIONAL "}
+            { "name": "cid", "type": "int", "value": "76629", "label": "OPTIONAL "}
         ]},
         { "name": "respHeader", "type": "message", "label": "OPTIONAL", "value": [
             { "name": "time", "type": "int", "value": "324", "label": "OPTIONAL "},
@@ -40,7 +40,7 @@ console.log(result);
             { "name": "errcode", "type": "int", "value": "0", "label": "OPTIONAL "}
         ]}
     ]},
-    {" name": "retMsg", "type": "null", "label": "OPTIONAL", "value": null}
+    { "name": "retMsg", "type": "null", "label": "OPTIONAL", "value": null}
 ];
  */
 ```
