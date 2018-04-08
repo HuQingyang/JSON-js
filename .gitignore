@@ -120,3 +120,4 @@ typings/
 
 .idea/inspectionProfiles/
 .idea/misc.xml
+!/dist/
