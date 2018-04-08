@@ -1,5 +1,6 @@
 # big-json-parser
 🍺 Parse JSON with Big Number to ProtoBuf Schema or JS Object
+![](https://api.travis-ci.org/HuQingyang/JSON-js.svg?branch=master)
 
 # Installation
 `npm i big-json-parser`
