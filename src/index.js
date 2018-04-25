@@ -259,9 +259,6 @@ let object = function () {
             key = keyString();
             white();
             next(":");
-            if (Object.hasOwnProperty.call(obj, key)) {
-                error("Duplicate key '" + key + "'");
-            }
             obj.push({ name: key, ...value() });
             white();
             if (ch === "}") {

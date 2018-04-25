@@ -1,6 +1,6 @@
 {
   "name": "big-json-parser",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist",
   "scripts": {
     "start": "webpack-dev-server --hot --inline --cache --devtool eval --port 2335",
